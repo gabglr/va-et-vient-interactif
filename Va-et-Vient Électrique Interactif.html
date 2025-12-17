@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Va-et-Vient Électrique - Interactif</title>
+    <style>
+        :root {
+            --font-family-display: Arial, sans-serif;
+            --font-weight-display: 600;
+            --font-family-content: Arial, sans-serif;
+            --font-weight-content: 400;
+            --font-size-content: 16px;
+            --line-height-content: 1.4;
+        }
+
+        body.theme-dark {
+            --color-bg-base: #0f172a;
+            --color-bg-elevated: #020617;
+            --color-bg-surface: #1e293b;
+            --color-bg-muted: #334155;
+            --color-text-primary: #f1f5f9;
+            --color-text-secondary: #cbd5e1;
+            --color-text-muted: #94a3b8;
+            --color-text-accent: #38bdf8;
+            --color-primary: #38bdf8;
+            --color-primary-foreground: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-content);
+            font-weight: var(--font-weight-content);
+            font-size: var(--font-size-content);
+            line-height: var(--line-height-content);
+            overflow-x: hidden;
+        }
+
+        .slide {
+            width: 960px;
+            height: 540px;
+            margin: 0 auto 20px;
+            display: none;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .row { flex-direction: row; }
+        .col { flex-direction: column; }
+        .center {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .space-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .items-end { align-items: flex-end; }
+        .fill-width { flex: 1; }
+        .fill-height { flex: 1; display: flex; flex-direction: column; }
+
+        .gap-sm { gap: 0.5rem; }
+        .gap-md { gap: 1rem; }
+        .gap-lg { gap: 1.5rem; }
+        .gap-xl { gap: 2rem; }
+
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .p-16 { padding: 4rem; }
+
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-8 { margin-top: 2rem; }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-family-display);
+            font-weight: var(--font-weight-display);
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.25rem; }
+        h3 { font-size: 1.75rem; }
+        h4 { font-size: 1.5rem; }
+
+        .text-6xl { font-size: 3.75rem; }
+        .text-5xl { font-size: 3rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-base { font-size: 1rem; }
+        .text-sm { font-size: 0.875rem; }
+
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+
+        .text-center { text-align: center; }
+
+        .opacity-80 { opacity: 0.8; }
+        .opacity-70 { opacity: 0.7; }
+
+        ul, ol {
+            margin-left: 2rem;
+            line-height: 1.8;
+        }
+
+        ul li { list-style: disc; }
+        li { margin-bottom: 0.75rem; }
+
+        .card {
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #38bdf8;
+            color: #020617;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0284c7;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #1e293b;
+            color: #f1f5f9;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .switch-btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .switch-btn:hover {
+            filter: brightness(1.2);
+        }
+
+        .lamp {
+            transition: fill 0.3s ease, filter 0.3s ease;
+        }
+
+        .lamp.off {
+            fill: #cbd5e1;
+            filter: brightness(0.7);
+        }
+
+        .lamp.on {
+            fill: #fbbf24;
+            filter: brightness(1.3) drop-shadow(0 0 10px #fbbf24);
+        }
+
+        .info-box {
+            background-color: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid #38bdf8;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="theme-dark">
+
+    <!-- Slide 1: Title -->
+    <section class="slide p-16 col center active" style="background-color: #020617; color: #f1f5f9;">
+        <h1 class="text-6xl mb-4" style="color: #38bdf8;">Va-et-Vient Électrique</h1>
+        <p class="text-2xl mb-8" style="color: #cbd5e1;">Maîtrisez la commande d'éclairage depuis 2 endroits</p>
+        <p class="text-sm" style="color: #94a3b8;">Guide complet • Schémas • Applications pratiques • Version interactive</p>
+    </section>
+
+    <!-- Slide 2: Definition -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Qu'est-ce qu'un Va-et-Vient ?</h2>
+        <div class="fill-height">
+            <p class="text-lg mb-4" style="color: #cbd5e1;">Un va-et-vient électrique est un système de commande d'éclairage qui permet de <span style="color: #38bdf8; font-weight: bold;">contrôler la même lumière depuis 2 endroits différents.</span></p>
+            <ul class="text-lg" style="color: #cbd5e1;">
+                <li>Composé de 2 interrupteurs spéciaux (commutateurs)</li>
+                <li>Reliés par des fils de navette</li>
+                <li>Permet d'allumer ET éteindre la lumière depuis n'importe quel interrupteur</li>
+                <li>Très pratique pour les escaliers et les couloirs</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Slide 3: Comparison Simple vs Va-et-Vient -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="text-center mb-6" style="color: #38bdf8;">Interrupteur Simple vs Va-et-Vient</h2>
+        <div class="fill-height row gap-lg">
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <h4 style="color: #38bdf8;">Interrupteur Simple</h4>
+                <p style="color: #cbd5e1;">✓ 1 seul endroit de commande</p>
+                <p style="color: #cbd5e1;">✓ 2 bornes (phase + neutre)</p>
+                <p style="color: #cbd5e1;">✓ Toilettes, petit bureau</p>
+            </div>
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <h4 style="color: #38bdf8;">Va-et-Vient</h4>
+                <p style="color: #cbd5e1;">✓ 2 endroits de commande</p>
+                <p style="color: #cbd5e1;">✓ 3 bornes (L + navettes)</p>
+                <p style="color: #cbd5e1;">✓ Escaliers, couloirs, chambres</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Principle -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">Principe de Fonctionnement</h2>
+        <p class="text-lg mb-4" style="color: #cbd5e1;">Le va-et-vient fonctionne selon un principe simple :</p>
+        <ul class="text-lg" style="color: #cbd5e1;">
+            <li><strong>Position 1:</strong> Vous appuyez sur l'interrupteur A → la lumière s'allume</li>
+            <li><strong>Position 2:</strong> Vous appuyez sur l'interrupteur B → la lumière s'éteint (peu importe l'état précédent)</li>
+            <li><strong>Position 3:</strong> Vous appuyez à nouveau sur A → la lumière se rallume</li>
+            <li><strong>Basculement:</strong> Chaque interrupteur bascule le circuit (inverse l'état)</li>
+        </ul>
+    </section>
+
+    <!-- Slide 5: Wiring Diagram with Zoom-Elec Image -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">Schéma de Câblage Détaillé</h2>
+        <div class="fill-height center">
+            <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/68982e29-769e-4e45-b9b7-64145d6c621f" alt="Schéma va-et-vient Zoom-Elec" style="max-width: 95%; max-height: 420px;">
+        </div>
+        <p class="text-sm mt-4" style="color: #94a3b8; text-align: center;">Source: Zoom-Elec • Cliquez sur les interrupteurs pour la simulation interactive à la diapo suivante</p>
+    </section>
+
+    <!-- Slide 6: INTERACTIVE Simulation -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">Simulation Interactive - Essayez!</h2>
+        <div class="fill-height center">
+            <svg width="600" height="300" viewBox="0 0 600 300" style="max-width: 100%; max-height: 280px;">
+                <!-- Disjoncteur -->
+                <rect x="20" y="20" width="80" height="50" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+                <text x="60" y="52" text-anchor="middle" font-size="12" fill="#38bdf8" font-weight="bold">Disjoncteur</text>
+
+                <!-- Phase input -->
+                <line x1="100" y1="45" x2="140" y2="45" stroke="#e74c3c" stroke-width="3"/>
+                <text x="120" y="35" font-size="11" fill="#e74c3c" font-weight="bold">Phase</text>
+
+                <!-- Interrupteur A (gauche) -->
+                <g id="switchA" class="switch-btn" cursor="pointer" onclick="toggleSwitch('A')">
+                    <rect x="140" y="80" width="60" height="80" fill="#1e293b" stroke="#38bdf8" stroke-width="2" rx="5"/>
+                    <text x="170" y="110" text-anchor="middle" font-size="14" fill="#38bdf8" font-weight="bold">A</text>
+                    <circle id="switchA-indicator" cx="170" cy="150" r="8" fill="#90ee90"/>
+                    <text x="170" y="180" text-anchor="middle" font-size="10" fill="#cbd5e1">Clic pour basculer</text>
+                </g>
+
+                <!-- Navette 1 (rouge) -->
+                <line x1="200" y1="115" x2="300" y2="115" stroke="#e74c3c" stroke-width="3"/>
+                <text x="250" y="105" text-anchor="middle" font-size="10" fill="#e74c3c">Navette 1</text>
+
+                <!-- Interrupteur B (droite) -->
+                <g id="switchB" class="switch-btn" cursor="pointer" onclick="toggleSwitch('B')">
+                    <rect x="320" y="80" width="60" height="80" fill="#1e293b" stroke="#38bdf8" stroke-width="2" rx="5"/>
+                    <text x="350" y="110" text-anchor="middle" font-size="14" fill="#38bdf8" font-weight="bold">B</text>
+                    <circle id="switchB-indicator" cx="350" cy="150" r="8" fill="#90ee90"/>
+                    <text x="350" y="180" text-anchor="middle" font-size="10" fill="#cbd5e1">Clic pour basculer</text>
+                </g>
+
+                <!-- Navette 2 (violet) -->
+                <line x1="380" y1="160" x2="480" y2="160" stroke="#9b59b6" stroke-width="3"/>
+                <text x="430" y="150" text-anchor="middle" font-size="10" fill="#9b59b6">Navette 2</text>
+
+                <!-- Lampe 1 -->
+                <g id="lamp1" class="lamp on">
+                    <circle cx="120" cy="250" r="20" fill="#fbbf24" filter="url(#glow)"/>
+                    <text x="120" y="260" text-anchor="middle" font-size="12" fill="#020617" font-weight="bold">💡</text>
+                </g>
+                <text x="120" y="285" text-anchor="middle" font-size="10" fill="#cbd5e1">Lampe 1</text>
+
+                <!-- Lampe 2 -->
+                <g id="lamp2" class="lamp on">
+                    <circle cx="450" cy="250" r="20" fill="#fbbf24" filter="url(#glow)"/>
+                    <text x="450" y="260" text-anchor="middle" font-size="12" fill="#020617" font-weight="bold">💡</text>
+                </g>
+                <text x="450" y="285" text-anchor="middle" font-size="10" fill="#cbd5e1">Lampe 2</text>
+
+                <!-- Neutre (bleu) -->
+                <line x1="100" y1="60" x2="100" y2="250" stroke="#3498db" stroke-width="3"/>
+                <text x="85" y="150" font-size="10" fill="#3498db" font-weight="bold">N</text>
+
+                <!-- Status text -->
+                <text id="status" x="300" y="30" text-anchor="middle" font-size="14" fill="#38bdf8" font-weight="bold">État: ALLUMÉ</text>
+
+                <!-- Glow filter -->
+                <defs>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+            </svg>
+        </div>
+        <div class="info-box">
+            <strong>👆 Cliquez sur les interrupteurs A ou B</strong> pour voir la lumière s'allumer/éteindre. Testez différentes combinaisons!
+        </div>
+    </section>
+
+    <!-- Slide 7: Practical Cases 1 -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">Cas d'Usage Pratiques (1/2)</h2>
+        <div class="fill-height row gap-lg">
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <h4 style="color: #38bdf8;">🪜 Escaliers</h4>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">Va-et-vient en haut et en bas. Allumez en montant, éteignez en arrivant.</p>
+            </div>
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <h4 style="color: #38bdf8;">🚪 Couloirs</h4>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">Un va-et-vient à chaque extrémité pour commander le couloir.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: Practical Cases 2 -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">Cas d'Usage Pratiques (2/2)</h2>
+        <div class="fill-height row gap-lg">
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <h4 style="color: #38bdf8;">🛏️ Chambres</h4>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">À l'entrée et à la tête du lit. Pratique sans sortir du lit.</p>
+            </div>
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <h4 style="color: #38bdf8;">📦 Grands Espaces</h4>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">Salons, garages. Commande depuis 2 zones différentes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: Installation Steps -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">Étapes d'Installation</h2>
+        <ul class="text-lg" style="color: #cbd5e1;">
+            <li>1. La <strong>phase</strong> arrive sur la borne L du 1er interrupteur</li>
+            <li>2. Les <strong>2 fils navettes</strong> relient les bornes 1 et 2 des interrupteurs</li>
+            <li>3. Le <strong>retour lampe</strong> part de la borne L du 2ème interrupteur</li>
+            <li>4. Le <strong>neutre</strong> va directement à la lampe (ne passe pas par les interrupteurs)</li>
+            <li>5. Vérification du fonctionnement dans les deux sens</li>
+        </ul>
+    </section>
+
+    <!-- Slide 10: Evolution -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Et au-delà de 2 Commandes ?</h2>
+        <p class="text-lg mb-4" style="color: #cbd5e1;">Pour commander depuis <strong>3 endroits ou plus</strong> :</p>
+        <ul class="text-lg" style="color: #cbd5e1;">
+            <li><strong>Permutateur:</strong> Ajouter un permutateur entre 2 va-et-vient</li>
+            <li><strong>Télérupteur:</strong> Solution avec boutons poussoirs (plus flexible)</li>
+            <li><strong>Domotique:</strong> Interrupteurs intelligents et connectés</li>
+        </ul>
+    </section>
+
+    <!-- Slide 11: Safety -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">⚠️ Consignes de Sécurité</h2>
+        <ul class="text-lg" style="color: #cbd5e1;">
+            <li>Coupez toujours l'alimentation au disjoncteur avant toute intervention</li>
+            <li>Respectez la norme <strong>NF C 15-100</strong> (électricité domestique)</li>
+            <li>Utilisez du matériel aux normes certifiées (CE)</li>
+            <li>En cas de doute, consultez un électricien professionnel</li>
+            <li>Maximum 8 points lumineux par circuit va-et-vient</li>
+        </ul>
+    </section>
+
+    <!-- Slide 12: Advantages -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">Avantages du Va-et-Vient</h2>
+        <div class="fill-height row gap-lg">
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <p style="color: #38bdf8; font-size: 2rem;">✅</p>
+                <p style="color: #cbd5e1;">Confort d'utilisation</p>
+                <p style="color: #cbd5e1; font-size: 0.85rem;">Plus besoin de revenir au même endroit</p>
+            </div>
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <p style="color: #38bdf8; font-size: 2rem;">💰</p>
+                <p style="color: #cbd5e1;">Coût modéré</p>
+                <p style="color: #cbd5e1; font-size: 0.85rem;">Installation simple et peu onéreuse</p>
+            </div>
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <p style="color: #38bdf8; font-size: 2rem;">🔧</p>
+                <p style="color: #cbd5e1;">Installation DIY</p>
+                <p style="color: #cbd5e1; font-size: 0.85rem;">Réalisable soi-même si compétent</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 13: Conclusion -->
+    <section class="slide p-16 col center" style="background-color: #020617; color: #f1f5f9;">
+        <h2 class="text-5xl mb-4" style="color: #38bdf8;">Résumé</h2>
+        <p class="text-xl mb-4" style="color: #cbd5e1;">Le va-et-vient est la solution idéale pour :</p>
+        <p class="text-lg" style="color: #cbd5e1;">✓ Contrôler la lumière depuis 2 endroits différents<br>✓ Améliorer le confort dans les escaliers et couloirs<br>✓ Installation conforme aux normes électriques</p>
+    </section>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button onclick="previousSlide()">← Précédent</button>
+        <button onclick="nextSlide()">Suivant →</button>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">13</span>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let lightState = true;
+        let switchAState = true;
+        let switchBState = true;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            if (n >= slides.length) currentSlide = 0;
+            if (n < 0) currentSlide = slides.length - 1;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            document.getElementById('total-slides').textContent = slides.length;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        function toggleSwitch(switchId) {
+            if (switchId === 'A') {
+                switchAState = !switchAState;
+                document.getElementById('switchA-indicator').setAttribute('fill', switchAState ? '#90ee90' : '#ff6b6b');
+            } else if (switchId === 'B') {
+                switchBState = !switchBState;
+                document.getElementById('switchB-indicator').setAttribute('fill', switchBState ? '#90ee90' : '#ff6b6b');
+            }
+            
+            lightState = switchAState !== switchBState;
+            updateLampDisplay();
+        }
+
+        function updateLampDisplay() {
+            const lamp1 = document.getElementById('lamp1');
+            const lamp2 = document.getElementById('lamp2');
+            const status = document.getElementById('status');
+            
+            if (lightState) {
+                lamp1.classList.remove('off');
+                lamp1.classList.add('on');
+                lamp2.classList.remove('off');
+                lamp2.classList.add('on');
+                status.textContent = 'État: ALLUMÉ 💡';
+                status.style.color = '#fbbf24';
+            } else {
+                lamp1.classList.add('off');
+                lamp1.classList.remove('on');
+                lamp2.classList.add('off');
+                lamp2.classList.remove('on');
+                status.textContent = 'État: ÉTEINT 🌑';
+                status.style.color = '#94a3b8';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        showSlide(currentSlide);
+    </script>
+
+</body>
+</html>

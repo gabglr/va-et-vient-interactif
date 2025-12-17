@@ -33,22 +33,25 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: var(--font-family-content);
-            font-weight: var(--font-weight-content);
-            font-size: var(--font-size-content);
-            line-height: var(--line-height-content);
-            overflow-x: hidden;
+       body {
+    font-family: var(--font-family-content);
+    font-weight: var(--font-weight-content);
+    font-size: var(--font-size-content);
+    line-height: var(--line-height-content);
+    overflow-x: hidden;
+    margin: 0;
+}
         }
 
-        .slide {
-            width: 960px;
-            height: 540px;
-            margin: 0 auto 20px;
-            display: none;
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
+       .slide {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: none;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
         }
 
         .slide.active {

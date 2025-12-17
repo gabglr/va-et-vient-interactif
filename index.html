@@ -33,21 +33,13 @@
             box-sizing: border-box;
         }
 
-        html {
-            width: 100%;
-            height: 100%;
-        }
-
         body {
             font-family: var(--font-family-content);
             font-weight: var(--font-weight-content);
             font-size: var(--font-size-content);
             line-height: var(--line-height-content);
             overflow-x: hidden;
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
+            overflow-y: hidden; /* empêche le scroll vertical */
         }
 
         .slide {
@@ -299,7 +291,7 @@
                 <g id="switchA" class="switch-btn" cursor="pointer" onclick="toggleSwitch('A')">
                     <rect x="140" y="80" width="60" height="80" fill="#1e293b" stroke="#38bdf8" stroke-width="2" rx="5"/>
                     <text x="170" y="110" text-anchor="middle" font-size="14" fill="#38bdf8" font-weight="bold">A</text>
-                    <circle id="switchA-indicator" cx="170" cy="150" r="8" fill="#90ee90"/>
+                    <rcle id="switchA-indicator" cx="170" cy="150" r="8" fill="#90ee90"/>
                     <text x="170" y="180" text-anchor="middle" font-size="10" fill="#cbd5e1">Clic pour basculer</text>
                 </g>
 
@@ -311,7 +303,7 @@
                 <g id="switchB" class="switch-btn" cursor="pointer" onclick="toggleSwitch('B')">
                     <rect x="320" y="80" width="60" height="80" fill="#1e293b" stroke="#38bdf8" stroke-width="2" rx="5"/>
                     <text x="350" y="110" text-anchor="middle" font-size="14" fill="#38bdf8" font-weight="bold">B</text>
-                    <circle id="switchB-indicator" cx="350" cy="150" r="8" fill="#90ee90"/>
+                    <rcle id="switchB-indicator" cx="350" cy="150" r="8" fill="#90ee90"/>
                     <text x="350" y="180" text-anchor="middle" font-size="10" fill="#cbd5e1">Clic pour basculer</text>
                 </g>
 
@@ -321,14 +313,14 @@
 
                 <!-- Lampe 1 -->
                 <g id="lamp1" class="lamp on">
-                    <circle cx="120" cy="250" r="20" fill="#fbbf24" filter="url(#glow)"/>
+                    <rcle cx="120" cy="250" r="20" fill="#fbbf24" filter="url(#glow)"/>
                     <text x="120" y="260" text-anchor="middle" font-size="12" fill="#020617" font-weight="bold">💡</text>
                 </g>
                 <text x="120" y="285" text-anchor="middle" font-size="10" fill="#cbd5e1">Lampe 1</text>
 
                 <!-- Lampe 2 -->
                 <g id="lamp2" class="lamp on">
-                    <circle cx="450" cy="250" r="20" fill="#fbbf24" filter="url(#glow)"/>
+                    <rcle cx="450" cy="250" r="20" fill="#fbbf24" filter="url(#glow)"/>
                     <text x="450" y="260" text-anchor="middle" font-size="12" fill="#020617" font-weight="bold">💡</text>
                 </g>
                 <text x="450" y="285" text-anchor="middle" font-size="10" fill="#cbd5e1">Lampe 2</text>
@@ -376,7 +368,7 @@
     <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
         <h2 class="mb-4" style="color: #38bdf8;">Cas d'Usage Pratiques (2/2)</h2>
         <div class="fill-height row gap-lg">
-            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+            <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9%;">
                 <h4 style="color: #38bdf8;">🛏️ Chambres</h4>
                 <p style="color: #cbd5e1; font-size: 0.95rem;">À l'entrée et à la tête du lit. Pratique sans sortir du lit.</p>
             </div>
@@ -388,7 +380,7 @@
     </section>
 
     <!-- Slide 9: Installation Steps -->
-    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9%;">
         <h2 class="mb-4" style="color: #38bdf8;">Étapes d'Installation</h2>
         <ul class="text-lg" style="color: #cbd5e1;">
             <li>1. La <strong>phase</strong> arrive sur la borne L du 1er interrupteur</li>
@@ -427,19 +419,19 @@
         <h2 class="mb-4" style="color: #38bdf8;">Avantages du Va-et-Vient</h2>
         <div class="fill-height">
             <div class="row gap-lg" style="margin-bottom: 1rem;">
-                <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9%;">
                     <p style="color: #38bdf8; font-size: 2rem; margin-bottom: 0.5rem;">✅</p>
                     <p style="color: #cbd5e1; font-weight: bold;">Confort d'utilisation</p>
                     <p style="color: #cbd5e1; font-size: 0.85rem;">Plus besoin de revenir au même endroit</p>
                 </div>
-                <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9%;">
                     <p style="color: #38bdf8; font-size: 2rem; margin-bottom: 0.5rem;">💰</p>
                     <p style="color: #cbd5e1; font-weight: bold;">Coût modéré</p>
                     <p style="color: #cbd5e1; font-size: 0.85rem;">Installation simple et peu onéreuse</p>
                 </div>
             </div>
             <div class="row gap-lg">
-                <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9;">
+                <div class="fill-width card" style="background-color: #1e293b; color: #f1f5f9%;">
                     <p style="color: #38bdf8; font-size: 2rem; margin-bottom: 0.5rem;">🔧</p>
                     <p style="color: #cbd5e1; font-weight: bold;">Installation DIY</p>
                     <p style="color: #cbd5e1; font-size: 0.85rem;">Réalisable soi-même si compétent</p>
@@ -475,10 +467,10 @@
             const slides = document.querySelectorAll('.slide');
             if (n >= slides.length) currentSlide = 0;
             if (n < 0) currentSlide = slides.length - 1;
-            
+
             slides.forEach(slide => slide.classList.remove('active'));
             slides[currentSlide].classList.add('active');
-            
+
             document.getElementById('current-slide').textContent = currentSlide + 1;
             document.getElementById('total-slides').textContent = slides.length;
         }
@@ -501,7 +493,7 @@
                 switchBState = !switchBState;
                 document.getElementById('switchB-indicator').setAttribute('fill', switchBState ? '#90ee90' : '#ff6b6b');
             }
-            
+
             lightState = switchAState !== switchBState;
             updateLampDisplay();
         }
@@ -510,7 +502,7 @@
             const lamp1 = document.getElementById('lamp1');
             const lamp2 = document.getElementById('lamp2');
             const status = document.getElementById('status');
-            
+
             if (lightState) {
                 lamp1.classList.remove('off');
                 lamp1.classList.add('on');
